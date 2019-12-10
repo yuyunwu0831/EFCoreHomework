@@ -51,8 +51,8 @@ namespace HomeWork1.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(courseInstructor).State = EntityState.Modified;
+            
+           _context.Entry(courseInstructor).State = EntityState.Modified;
 
             try
             {

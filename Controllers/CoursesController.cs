@@ -45,9 +45,16 @@ namespace HomeWork1.Controllers
         [HttpGet("ViewDCCount")]
         public async Task<ActionResult<IEnumerable<VwDepartmentCourseCount>>> GetvwDepartmentCourseCount()
         {
+            //查詢方法一
+            //var vwDCCount = await _context.VwDepartmentCourseCount
+            //    .FromSqlRaw("select * from dbo.VwDepartmentCourseCount")
+            //   .ToListAsync();
+            //return vwDCCount;
+
+            //查詢方法二
             var vwDCCount = await _context.VwDepartmentCourseCount
-                .FromSqlRaw("select * from dbo.VwDepartmentCourseCount")
-               .ToListAsync();
+                .FromSqlInterpolated($"select * from dbo.VwDepartmentCourseCount")
+                .ToListAsync();
             return vwDCCount;
         }
 
@@ -81,6 +88,9 @@ namespace HomeWork1.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+
+               
+
             }
             catch (DbUpdateConcurrencyException)
             {
