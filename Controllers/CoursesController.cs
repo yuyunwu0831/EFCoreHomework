@@ -27,6 +27,30 @@ namespace HomeWork1.Controllers
             return await _context.Course.ToListAsync();
         }
 
+        // GET: api/Courses/ViewStudent:20191209:yuyun:新增用來查詢檢視表VwCourseStudents的內容
+        [HttpGet("ViewStudent")]
+        public async Task<ActionResult<IEnumerable<VwCourseStudents>>> GetvwCourseStudents()
+        {
+            return await _context.VwCourseStudents.ToListAsync();
+        }
+
+        // GET: api/Courses/ViewStudentCount:20191209:yuyun:新增用來查詢檢視表VwCourseStudentCount的內容
+        [HttpGet("ViewStudentCount")]
+        public async Task<ActionResult<IEnumerable<VwCourseStudentCount>>> GetvwCourseStudentCount()
+        {
+            return await _context.VwCourseStudentCount.ToListAsync();
+        }
+
+        // GET: api/Courses/ViewDCCount :20191209:yuyun:新增用 Raw SQL Query 的方式查詢檢視表vwDepartmentCourseCount 的內容
+        [HttpGet("ViewDCCount")]
+        public async Task<ActionResult<IEnumerable<VwDepartmentCourseCount>>> GetvwDepartmentCourseCount()
+        {
+            var vwDCCount = await _context.VwDepartmentCourseCount
+                .FromSqlRaw("select * from dbo.VwDepartmentCourseCount")
+               .ToListAsync();
+            return vwDCCount;
+        }
+
         // GET: api/Courses/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Course>> GetCourse(int id)
