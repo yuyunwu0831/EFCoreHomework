@@ -14,10 +14,6 @@
    "Tables": [
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[__EFMigrationsHistory]"
-      },
-      {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Course]"
       },
       {
