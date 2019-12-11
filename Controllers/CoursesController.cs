@@ -24,7 +24,11 @@ namespace HomeWork1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Course>>> GetCourse()
         {
-            return await _context.Course.ToListAsync();
+            //return await _context.Course.ToListAsync();
+            return await _context.Course.Where(x => x.IsDeleted != true).ToListAsync();
+           
+
+
         }
 
         // GET: api/Courses/ViewStudent:20191209:yuyun:新增用來查詢檢視表VwCourseStudents的內容
@@ -41,28 +45,13 @@ namespace HomeWork1.Controllers
             return await _context.VwCourseStudentCount.ToListAsync();
         }
 
-        // GET: api/Courses/ViewDCCount :20191209:yuyun:新增用 Raw SQL Query 的方式查詢檢視表vwDepartmentCourseCount 的內容
-        [HttpGet("ViewDCCount")]
-        public async Task<ActionResult<IEnumerable<VwDepartmentCourseCount>>> GetvwDepartmentCourseCount()
-        {
-            //查詢方法一
-            //var vwDCCount = await _context.VwDepartmentCourseCount
-            //    .FromSqlRaw("select * from dbo.VwDepartmentCourseCount")
-            //   .ToListAsync();
-            //return vwDCCount;
-
-            //查詢方法二
-            var vwDCCount = await _context.VwDepartmentCourseCount
-                .FromSqlInterpolated($"select * from dbo.VwDepartmentCourseCount")
-                .ToListAsync();
-            return vwDCCount;
-        }
+       
 
         // GET: api/Courses/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Course>> GetCourse(int id)
         {
-            var course = await _context.Course.FindAsync(id);
+            var course = await _context.Course.Where(x => x.IsDeleted != true).FirstOrDefaultAsync(x => x.CourseId == id);
 
             if (course == null)
             {
@@ -124,12 +113,15 @@ namespace HomeWork1.Controllers
         public async Task<ActionResult<Course>> DeleteCourse(int id)
         {
             var course = await _context.Course.FindAsync(id);
+           
             if (course == null)
             {
                 return NotFound();
             }
 
-            _context.Course.Remove(course);
+            // _context.Course.Remove(course);
+            //將原本Remove的動作改為對IsDeleted標註為 True即可
+            course.IsDeleted = true; 
             await _context.SaveChangesAsync();
 
             return course;
